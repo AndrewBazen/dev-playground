@@ -1,6 +1,7 @@
 # A small python script to list the type and number of extensions
 # in a given directory.
 
+import hashlib
 from pathlib import Path
 import sys
 
@@ -60,6 +61,20 @@ def display(info):
     for i in info:
         print(f"{i[0]:9s} | {i[1]['count']:5d} | {i[1]['size']}")
 
+
+def hash_file(file_path, chunk_size=8192):
+
+    hash_object = hashlib.sha256()
+
+    try:
+        with open(file_path, 'rb') as f:
+            while chunk := f.read(chunk_size):
+                hash_object.update(chunk)
+
+            return hash_object.hexdigest()
+    except FileNotFoundError:
+        print(f"{file_path} does not exist")
+        return None
 
 if __name__ == '__main__':
     main(sys.argv[1:])
