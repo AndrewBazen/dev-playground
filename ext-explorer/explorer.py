@@ -18,9 +18,13 @@ def main(args):
     ext_info = collect(path)
     if ext_info is None:
         sys.exit()
-    
-    display(ext_info)
 
+    ext_info_sorted = sorted(ext_info.items(), key=get_size, reverse=True)
+
+    display(ext_info_sorted)
+
+def get_size(item):
+    return item[1]['size']
 
 def collect(path):
     # new dictionary to hold {ext, # of times seen}
@@ -51,10 +55,10 @@ def collect(path):
 
 
 def display(info):
-    print("extension - count")
+    print("extension | count | size")
     print("-------------------------")
     for i in info:
-        print(f"{i} - {info[i]}")
+        print(f"{i[0]:9s} | {i[1]['count']:5d} | {i[1]['size']}")
 
 
 if __name__ == '__main__':
